@@ -275,6 +275,7 @@ trace_backends="log"
 trace_file="trace"
 spice=""
 rbd=""
+cephfs=""
 smartcard=""
 libusb=""
 usb_redir=""
@@ -1019,6 +1020,10 @@ for opt do
   ;;
   --enable-rbd) rbd="yes"
   ;;
+  --disable-cephfs) cephfs="no"
+  ;;
+  --enable-cephfs) cephfs="yes"
+  ;;
   --disable-xfsctl) xfs="no"
   ;;
   --enable-xfsctl) xfs="yes"
@@ -1345,6 +1350,7 @@ disabled with --disable-FEATURE, default is enabled if available:
   vhost-net       vhost-net acceleration support
   spice           spice
   rbd             rados block device (rbd)
+  cephfs          Ceph File System
   libiscsi        iscsi support
   libnfs          nfs support
   smartcard       smartcard support (libcacard)
@@ -3087,6 +3093,28 @@ EOF
 fi
 
 ##########################################
+# cephfs probe
+if test "$cephfs" != "no" ; then
+  cat > $TMPC <<EOF
+#include <stdio.h>
+#include <cephfs/libcephfs.h>
+int main(void) {
+    struct ceph_mount_info *cmount;
+    ceph_create(&cmount, NULL);
+    return 0;
+}
+EOF
+  cephfs_libs="-lcephfs"
+  if compile_prog "" "$cephfs_libs" ; then
+    cephfs=yes
+  else
+    if test "$cephfs" = "yes" ; then
+      feature_not_found "cephfs" "Install libcephfs/ceph devel"
+    fi
+    cephfs=no
+  fi
+fi
+##########################################
 # libssh2 probe
 min_libssh2_version=1.2.8
 if test "$libssh2" != "no" ; then
@@ -4760,6 +4788,7 @@ else
 echo "spice support     $spice"
 fi
 echo "rbd support       $rbd"
+echo "cephfs support    $cephfs"
 echo "xfsctl support    $xfs"
 echo "smartcard support $smartcard"
 echo "libusb            $libusb"
@@ -5223,6 +5252,10 @@ if test "$rbd" = "yes" ; then
   echo "CONFIG_RBD=m" >> $config_host_mak
   echo "RBD_CFLAGS=$rbd_cflags" >> $config_host_mak
   echo "RBD_LIBS=$rbd_libs" >> $config_host_mak
+fi
+if test "$cephfs" = "yes" ; then
+  echo "CONFIG_CEPHFS=m" >> $config_host_mak
+  echo "CEPHFS_LIBS=$cephfs_libs" >> $config_host_mak
 fi
 
 echo "CONFIG_COROUTINE_BACKEND=$coroutine" >> $config_host_mak

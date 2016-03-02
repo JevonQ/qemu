@@ -210,4 +210,97 @@ class VirtFSRequestTracker(simpletrace.Analyzer):
         def v9fs_readlink_return(self, tag, id, target):
                 print "RREADLINK (tag =", tag, ", target =", target, ")"
 
+	def cephfs_lstat_return(self, path, stmode, stuid, stgid, stsize, ret):
+		print "RCEPHFSLSTAT (path =", path, ", stmode =", stmode, ", stuid =", stuid, ", stgid =", stgid, ", stsize =", stsize, ", ret =", ret, ")"
+
+	def cephfs_readlink_return(self, path, ret):
+		print "RCEPHFSREADLINK (path =", path, ", ret =", ret, ")"
+
+	def cephfs_open_return(self, path, flags, mode, fd):
+		print "RCEPHFSOPEN (path =", path, ", flags =", flags, ", mode =", mode, ", fd =", fd, ")"
+
+	def cephfs_opendir_return(self, path, ret):
+		print "RCEPHFSOPENDIR (path =", path, ", ret =", ret, ")"
+
+	def cephfs_rewinddir(self, dir):
+		print "TCEPHFSREWINDDIR (dir =", dir, ")"
+
+	def cephfs_telldir(self, dir):
+		print "TCEPHFSTELLDIR (dir =", dir, ")"
+
+	def cephfs_readdir_r_return(self, tmpent, entry, ret):
+		print "RCEPHFSREADDIRR (tmpent =", tmpent, ", entry =", entry, ", ret =", ret, ")"
+
+	def cephfs_seekdir(self, dir, off):
+		print "TCEPHFSSEEKDIR (dir =", dir, ", off =", off, ")"
+
+	def cephfs_preadv(self, iovcnt, len):
+		print "TCEPHFSPREADV (iovcnt=", iovcnt, ", len =", len, ")"
+
+	def cephfs_preadv_return(self, iovcnt, len, ret):
+		print "RCEPHFSPREADV (iovcnt=", iovcnt, ", len =", len, ", ret = ", ret, ")"
+
+	def cephfs_pwritev(self, iovcnt, len, offset):
+		print "TCEPHFSPWRITEV (iovcnt=", iovcnt, ", len =", len, ", offset =", offset, ")"
+
+	def cephfs_pwritev_return(self, iovcnt, len, offset, ret):
+		print "RCEPHFSPWRITEV (iovcnt=", iovcnt, ", len =", len, ", offset =", offset, ", ret = ", ret, ")"
+
+	def cephfs_chmod_return(self, path, fcmode, ret):
+		print "RCEPHFSCHMOD (path =", path, ", fcmode =", fcmode, ", ret =", ret, ")"
+
+	def cephfs_mknod_return(self, path, fcmode, fcrdev, ret):
+		print "RCEPHFSMKNOD (path =", path, ", fcmode =", fcmode, ", fcrdev =", fcrdev, ", ret =", ret, ")"
+
+	def cephfs_mkdir_return(self, path, fcmode, ret):
+		print "RCEPHFSMKDIR (path =", path, ", fcmode =", fcmode, ", ret =", ret, ")"
+
+	def cephfs_fstat_return(self, fidtype, fd, stuid, stgid, stsize, ret):
+		print "RCEPHFSFSTAT (fidtype =", fidtype, ", fd =", fd, ", stuid =", stuid, ", stgid =", stgid, ", stsize =", stsize, ", ret =", ret, ")"
+
+	def cephfs_open2_return(self, path, flags, fcmode):
+		print "RCEPHFSOPEN2 (path =", path, ", flags =", flags, "fcmode =", fcmode, ")"
+
+	def cephfs_symlink_return(self, oldpath, path, ret):
+		print "RCEPHFSSYMLINK (oldpath =", oldpath, ", path =", path, ", ret =", ret, ")"
+
+	def cephfs_link_return(self, oldpath, path, ret):
+		print "RCEPHFSLINK (oldpath =", oldpath, ", path =", path, ", ret =", ret, ")"
+
+	def cephfs_truncate_return(self, path, size, ret):
+		print "RCEPHFSTRUNCATE (path =", path, ", size =", size, ", ret =", ret, ")"
+
+	def cephfs_rename_return(self, oldpath, newpath, ret):
+		print "RCEPHFSRENAME (oldpath =", oldpath, ", newpath =", newpath, ", ret =", ret, ")"
+
+	def cephfs_chown_return(self, path, fcuid, fcgid, ret):
+		print "RCEPHFSCHOWN (path =", path, ", fcuid =", fcuid, ", fcgid =", fcgid, ", ret =", ret, ")"
+
+	def cephfs_utimensat_return(self, path, ret):
+		print "RCEPHFSUTIMENSAT (path =", path, ", ret =", ret, ")"
+
+	def cephfs_fsync_return(self, fd, datasync, ret):
+		print "RCEPHFSFSYNC (fd =", fd, ", datasync =", datasync, ", ret =", ret, ")"
+
+	def cephfs_lgetxattr_return(self, path, name, ret):
+		print "RCEPHFSLGETXATTR (path =", path, ", name =", name, ", ret =", ret, ")"
+
+	def cephfs_llistxattr_return(self, path, ret):
+		print "RCEPHFSLLISTXATTR (path =", path, ", ret =", ret, ")"
+
+	def cephfs_lsetxattr_return(self, path, name, flags, ret):
+		print "RCEPHFSLSETXATTR (path =", path, ", name =", name, ", flags =", flags, ", ret =", ret, ")"
+
+	def cephfs_lremovexattr_return(self, path, name, ret):
+		print "RCEPHFSLREMOVEXATTR (path =", path, ", name =", name, ", ret =", ret, ")"
+
+	def cephfs_renameat_return(self, oldname, newname, ret):
+		print "RCEPHFSRENAMEAT (oldname =", oldname, ", newname =", newname, ", ret =", ret, ")"
+
+	def cephfs_unlinkat_return(self, path, stmode, ret):
+		print "RCEPHFSUNLINKAT (path =", path, ", stmode =", stmode, ", ret =", ret, ")"
+
+	def cephfs_init(self, path):
+		print "RCEPHFSINIT (path =", path, ")"
+
 simpletrace.run(VirtFSRequestTracker())
